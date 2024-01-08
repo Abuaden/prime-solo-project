@@ -5,8 +5,9 @@ body,
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family:  "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
+  background-color: #2d4059;
 }
 
 img {
@@ -32,8 +33,8 @@ Button
   border-color: #014041;
   border-width: 1px 1px 3px;
   border-radius: 4px;
-  background-color: #00acb0;
-  color: #f8f8f8;
+  background-color: #ffd460;
+  color: #1c2837;
   font-size: 1.1rem;
   outline: 0;
   cursor: pointer;
@@ -55,7 +56,7 @@ Button
 }
 
 .btn:hover {
-  background-color: #008183;
+  background-color: #ffd460;
   text-decoration: none;
 }
 
@@ -67,7 +68,7 @@ Button
   border-radius: 0;
   background: none;
   font: inherit;
-  color: #444;
+  color: #ffd460;
 }
 
 .btn_asLink:hover {
@@ -97,16 +98,197 @@ Form Treatment
 
 .formPanel {
   box-sizing: border-box;
-  width: 400px;
+  width: 350px;
   max-width: 100%;
   padding: 25px;
   margin: 0 auto 20px;
-  background-color: #efefef;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 input {
   margin: 5px;
   margin-bottom: 10px;
+  background-color: transparent;
+  border: 1px solid #ffe293;
+  border-radius: 5px;
+  color: white;
+  padding: 8px 15px;
+  /* margin-left: 20px;   */
+}
+input:focus {
+  background-color: transparent;
+  border: 1px solid #ffc62d;
+  outline: 0;
+}
+
+label {
+  color: white;
+}
+
+.input {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.flashcards {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.all-flashcards {
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  white-space: nowrap;
+  width: 600px;
+  height: 400px;
+  min-height: 400px;
+}
+.current-flashcard {
+  min-width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  background-color: red;
+  border: 1px solid red;
+  scroll-snap-align: start;
+  color: white;
+}
+
+.bg-red {
+  background-color: red;
+  font-size: xx-large;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-family: papyrus;
+}
+
+.bg-blue {
+  background-color: blue;
+  font-size: xx-large;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.bg-green {
+  background-color: green;
+  font-size: xx-large;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.bg-yellow {
+  background-color: yellow;
+  font-size: xx-large;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.bg-black {
+  background-color: black;
+  font-size: xx-large;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.dashboard-nav {
+  background-color: #2d4059;
+  color: #ffc62d;
+  padding: 15px;
+  /* text-align: center; */
+  width: 100%;
+  display: inline;
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+  width: 25%;
+  margin-top: 10px;
+  margin-left: 17px;
+  gap: 30px;
+  color: white;
+
+}
+
+svg {
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+.boxer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flashcards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.current-flashcard {
+  min-width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  background-color: red;
+  border: 1px solid red;
+  scroll-snap-align: start;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.headerat{
+  display: flex;
+  justify-content: start;
+  gap: 100px;
+  margin-bottom: 50px;
+  padding-left: 20px;
+}
+
+.headerat a{
+  font-weight: 600;
+color: #ffc62d ;
+text-decoration: none;
+}
+
+.active-flashcard{
+  color: white;
+  font-weight: 600;
+}
+
+a:visited{
+  color: #ffc62d;
 }
