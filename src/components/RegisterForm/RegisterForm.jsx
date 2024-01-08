@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
 
@@ -15,6 +19,11 @@ function RegisterForm() {
       payload: {
         username: username,
         password: password,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        current_level: 1,
+        flashcards_flipped: [],
       },
     });
   }; // end registerUser
@@ -29,12 +38,24 @@ function RegisterForm() {
       <div className="input">
         <label htmlFor="firstName">First Name: </label>
 
-        <input type="text" name="firstName" required />
+        <input
+          type="text"
+          name="firstName"
+          required
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
       </div>
       <div className="input">
         <label htmlFor="lastName">Last Name: </label>
 
-        <input type="text" name="lastName" required />
+        <input
+          type="text"
+          name="lastName"
+          required
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
       </div>
       <div className="input">
         <label htmlFor="username">Username: </label>
@@ -50,7 +71,13 @@ function RegisterForm() {
       <div className="input">
         <label htmlFor="email"> Email: </label>
 
-        <input type="email" name="email" required />
+        <input
+          type="email"
+          name="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
 
       <div className="input">

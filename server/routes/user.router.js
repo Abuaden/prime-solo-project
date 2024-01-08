@@ -29,11 +29,11 @@ router.post("/register", (req, res, next) => {
       username,
       req.body.email,
       password,
-      req.body.firstname,
-      req.body.lastname,
+      req.body.firstName,
+      req.body.lastName,
       req.body.current_level,
       "user",
-      req.body.flashcards_flipped,
+      req.body.flashcards_flipped, 
     ])
     .then(() => res.sendStatus(201))
     .catch((err) => {
