@@ -28,6 +28,21 @@ function* fetchAllFlashcards() {
     console.log("fetchAllFlashcards error:", error);
   }
 }
+function* getProgress(action) {
+  try {
+    // Get the flashcards:
+    const flashcardsResponse = yield axios.get(
+      "/api/flashcards/flips/" + action.payload.id
+    );
+    // Set the value of the flashcards reducer:
+    yield put({
+      type: "SET_PROGRESS",
+      payload: flashcardsResponse.data[0].flashcards_count,
+    });
+  } catch (error) {
+    console.log("fetchAllFlashcards error:", error);
+  }
+}
 function* editFlashcard(action) {
   try {
     // clear any existing error on the flashcard page
@@ -51,6 +66,8 @@ function* flipFlashcard(action) {
       "/api/flashcards/flips/" + action.payload.userId,
       action.payload
     );
+    console.log("card has been flipped");
+    yield put({ type: "GET_PROGRESS", payload: { id: action.payload.userId } });
   } catch (error) {
     console.log("Error with creating flashcard:", error);
     yield put({ type: "FLASHCARD_FAILED" });
@@ -76,6 +93,7 @@ function* flashcardSaga() {
   yield takeLatest("EDIT_FLASHCARD", editFlashcard);
   yield takeLatest("DELETE_FLASHCARD", deleteFlashcard);
   yield takeLatest("FLIP_FLASHCARD", flipFlashcard);
+  yield takeLatest("GET_PROGRESS", getProgress);
 }
 
 export default flashcardSaga;

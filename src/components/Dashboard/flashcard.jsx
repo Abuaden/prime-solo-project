@@ -8,19 +8,27 @@ function FlashCard({ flashcard }) {
   const [showArabic, setShowArabic] = useState(true);
   const flipThisCard = () => {
     const body = { flippedId: flashcard?.id, userId: user?.id };
+    if (progress.includes(flashcard?.id.toString())) {
+      console.log("this card has already been flipped");
+      return;
+    }
     dispatch({
       type: "FLIP_FLASHCARD",
       payload: body,
     });
   };
+  const progress = useSelector((store) => store.progressReducer);
 
+  useEffect(() => {
+    if (user?.id) {
+      dispatch({ type: "GET_PROGRESS", payload: { id: user?.id } });
+    }
+  }, [user]);
   return (
     <div
       onClick={() => {
         setShowArabic(!showArabic);
-        if (!showArabic) {
-          flipThisCard();
-        }
+        flipThisCard();
       }}
       className={`bg-red current-flashcard flip-card ${
         showArabic ? "" : "flipped"

@@ -43,7 +43,7 @@ router.put("/flips/:user_id", rejectUnauthenticated, (req, res, next) => {
 router.get("/flips/:user_id", rejectUnauthenticated, (req, res, next) => {
   const queryText = `SELECT
       "id",
-      ARRAY_LENGTH("flashcards_flipped", 1) AS "flashcards_count"
+      "flashcards_flipped" AS "flashcards_count"
   FROM
       "user"
   WHERE

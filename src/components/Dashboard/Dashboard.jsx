@@ -48,14 +48,15 @@ function DashboardPage() {
       setCurrentSlide(currentSlideIndex + 1);
     }
   };
-  console.log(user);
 
   const allFlashcards = useSelector((store) => store.flashcardReducer);
-console.log(allFlashcards);
+  const progress = useSelector((store) => store.progressReducer);
+
   useEffect(() => {
     dispatch({ type: "GET_FLASHCARDS" });
   }, [dispatch]);
-  console.log("haha", allFlashcards);
+
+ 
 
   const getLevelNameFromId = (level_id) => {
     if (level_id === "1") {
