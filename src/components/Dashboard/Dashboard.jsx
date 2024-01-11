@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CreateFlashCard from "./CreateFlashCard";
 
 function DashboardPage() {
@@ -16,7 +16,7 @@ function DashboardPage() {
       });
     }
   };
-
+  const dispatch = useDispatch();
   const scrollToPrev = () => {
     if (galleryRef.current) {
       galleryRef.current.scrollBy({
@@ -49,90 +49,170 @@ function DashboardPage() {
     }
   };
   console.log(user);
+
+  const allFlashcards = useSelector((store) => store.flashcardReducer);
+
+  useEffect(() => {
+    dispatch({ type: "GET_FLASHCARDS" });
+  }, [dispatch]);
+  console.log("haha", allFlashcards);
+
+  const getLevelNameFromId = (level_id) => {
+    if (level_id === "1") {
+      return "Novice";
+    } else if (level_id === "2") {
+      return "Advanced Beginner";
+    } else if (level_id === "3") {
+      return "Proficient";
+    } else if (level_id === "4") {
+      return "Master";
+    }
+  };
+
+  const [editingFlashcard, setEditingFlashcard] = useState(null);
   return (
-    <div className="boxer">
-      {user?.role !== "admin" && (
-        <>
-          <nav className="dashboard-nav">
-            <div className="headerat">
-              <a href="/#/dashboard"> Flashcard</a>
-              <a href="/#/quiz"> Quiz</a>
-              <a href="/#/progress"> MyProgress</a>
-            </div>
-          </nav>
-          <section className="flashcards">
-            <div
-              id="allFlashcards"
-              className="all-flashcards no-scrollbar "
-              ref={galleryRef}
-              style={{
-                display: "flex",
-                overflowX: "scroll",
-                scrollSnapType: "x mandatory",
-              }}
-            >
-              <div className="bg-red current-flashcard">يلعب</div>
-              <div className="bg-blue current-flashcard">بقرة</div>
-              <div className="bg-green current-flashcard">لسان</div>
-              <div className="bg-yellow current-flashcard">حصان</div>
-              <div className="bg-black current-flashcard">بطانية</div>
-              <div></div>
-            </div>
-            <div className="arrows">
-              <svg
-                onClick={scrollToPrev}
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-arrow-left-circle"
+    <>
+      <div className="boxer">
+        {user?.role !== "admin" && (
+          <>
+            <nav className="dashboard-nav">
+              <div className="headerat">
+                <a href="/#/dashboard"> Flashcard</a>
+                <a href="/#/quiz"> Quiz</a>
+                <a href="/#/progress"> MyProgress</a>
+              </div>
+            </nav>
+            <section className="flashcards">
+              <div
+                id="allFlashcards"
+                className="all-flashcards no-scrollbar "
+                ref={galleryRef}
+                style={{
+                  display: "flex",
+                  overflowX: "scroll",
+                  scrollSnapType: "x mandatory",
+                }}
               >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M16 12H8" />
-                <path d="m12 8-4 4 4 4" />
-              </svg>
-              <svg
-                onClick={scrollToNext}
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-arrow-right-circle"
+                <div className="bg-red current-flashcard">يلعب</div>
+                <div className="bg-blue current-flashcard">بقرة</div>
+                <div className="bg-green current-flashcard">لسان</div>
+                <div className="bg-yellow current-flashcard">حصان</div>
+                <div className="bg-black current-flashcard">بطانية</div>
+              </div>
+              <div className="arrows">
+                <svg
+                  onClick={scrollToPrev}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-arrow-left-circle"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M16 12H8" />
+                  <path d="m12 8-4 4 4 4" />
+                </svg>
+                <svg
+                  onClick={scrollToNext}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-arrow-right-circle"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M8 12h8" />
+                  <path d="m12 16 4-4-4-4" />
+                </svg>
+              </div>
+              <span className="active-flashcard">
+                {currentSlide}/{totalSlides}
+              </span>
+            </section>
+          </>
+        )}
+        {user?.role === "admin" && (
+          <section className="adminView">
+            <div className="admin-navigation">
+              <button
+                className="create-card"
+                onClick={() => setShowPopup(true)}
               >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M8 12h8" />
-                <path d="m12 16 4-4-4-4" />
-              </svg>
+                Create New Flashcard
+              </button>
             </div>
-            <span className="active-flashcard">
-              {currentSlide}/{totalSlides}
-            </span>
+            <table>
+              <thead>
+                <tr>
+                  <th>English Word</th>
+                  <th>Arabic Word</th>
+                  <th>Level</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allFlashcards?.map((flashcard, index) => (
+                  <tr key={index}>
+                    <td>{flashcard?.englishword}</td>
+                    <td>{flashcard?.arabicword}</td>
+                    <td>
+                      {getLevelNameFromId(flashcard?.level_id?.toString())}
+                    </td>
+                    <td className="tableButtons">
+                      <button
+                        onClick={() => {
+                          // Save the flashcard to be edited on the editing flashcard state
+                          setEditingFlashcard(flashcard);
+                          // show the popup model
+                          setShowPopup(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => {
+                          const body = {
+                            id: flashcard?.id,
+                          };
+                          dispatch({
+                            type: "DELETE_FLASHCARD",
+                            payload: body,
+                          });
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </section>
-        </>
-      )}
-      {user?.role === "admin" && (
-        <section className="adminView">
-          <div className="admin-navigation">
-            <button className="create-card" onClick={() => setShowPopup(true)}>
-              Create New Card
-            </button>
-          </div>
-        </section>
-      )}
-      {showPopup && <CreateFlashCard  closeModel={()=> setShowPopup(false)}/>}
-      
-    </div>
+        )}
+        {showPopup && (
+          <CreateFlashCard
+            closeModel={() => setShowPopup(false)}
+            editingFlashcard={editingFlashcard}
+          />
+        )}
+      </div>
+
+    
+
+
+    </>
   );
 }
-
 export default DashboardPage;
+
+
