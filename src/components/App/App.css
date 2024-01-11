@@ -155,14 +155,11 @@ label {
   height: 100%;
   box-sizing: border-box;
   padding: 20px;
-  background-color: red;
-  border: 1px solid red;
   scroll-snap-align: start;
   color: white;
 }
 
 .bg-red {
-  background-color: red;
   font-size: xx-large;
   align-items: center;
   justify-content: center;
@@ -244,8 +241,6 @@ svg {
   height: 100%;
   box-sizing: border-box;
   padding: 20px;
-  background-color: red;
-  border: 1px solid red;
   scroll-snap-align: start;
   color: white;
   display: flex;
@@ -430,3 +425,53 @@ height: 100%;
 .tableButtons{
   display: flex;
 }
+
+
+
+.flip-card {
+  perspective: 1000px;
+  width: 200px;
+  height: 300px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped {
+  transform: rotateX(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  /* Styles for the front of the card */
+  background-color: #3e587b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flip-card-back {
+  /* Styles for the back of the card */
+  background-color: #3e587b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotateX(180deg);
+}
+

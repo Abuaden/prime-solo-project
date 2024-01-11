@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CreateFlashCard from "./CreateFlashCard";
-
+import FlashCard from "./flashcard";
 function DashboardPage() {
   const user = useSelector((store) => store.user);
   const galleryRef = useRef(null);
@@ -51,7 +51,7 @@ function DashboardPage() {
   console.log(user);
 
   const allFlashcards = useSelector((store) => store.flashcardReducer);
-
+console.log(allFlashcards);
   useEffect(() => {
     dispatch({ type: "GET_FLASHCARDS" });
   }, [dispatch]);
@@ -93,11 +93,9 @@ function DashboardPage() {
                   scrollSnapType: "x mandatory",
                 }}
               >
-                <div className="bg-red current-flashcard">يلعب</div>
-                <div className="bg-blue current-flashcard">بقرة</div>
-                <div className="bg-green current-flashcard">لسان</div>
-                <div className="bg-yellow current-flashcard">حصان</div>
-                <div className="bg-black current-flashcard">بطانية</div>
+                {allFlashcards?.map((flashcard, index) => (
+                  <FlashCard key={index} flashcard={flashcard} />
+                ))}
               </div>
               <div className="arrows">
                 <svg
@@ -136,7 +134,7 @@ function DashboardPage() {
                 </svg>
               </div>
               <span className="active-flashcard">
-                {currentSlide}/{totalSlides}
+                {currentSlide}/{allFlashcards?.length}
               </span>
             </section>
           </>
@@ -206,13 +204,7 @@ function DashboardPage() {
           />
         )}
       </div>
-
-    
-
-
     </>
   );
 }
 export default DashboardPage;
-
-

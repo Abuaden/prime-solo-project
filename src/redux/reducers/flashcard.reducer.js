@@ -3,7 +3,7 @@ const flashcardReducer = (state = [], action) => {
     case 'SET_FLASHCARDS':
       return action.payload;
     case 'UNSET_USER':
-      return {};
+      return [];
     default:
       return state;
   }
@@ -12,5 +12,4 @@ const flashcardReducer = (state = [], action) => {
 // user will be on the redux state at:
 // state.user
 export default flashcardReducer;
-flashcardReducer.js
 
