@@ -1,19 +1,48 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-function CreateFlashCard({closeModel}) {
+function CreateFlashCard({ closeModel, editingFlashcard }) {
   const [englishWord, setEnglishWord] = useState("");
   const [arabicWord, setArabicWord] = useState("");
   const [levelId, setLevelId] = useState("");
-
+  const dispatch = useDispatch();
   const create = () => {
     const body = {
-      englishWord: englishWord,
-      arabicWord: arabicWord,
-      levelId: levelId,
+      englishword: englishWord,
+      arabicword: arabicWord,
+      // Check if level id was selected if not we default to level 1
+      level_id: levelId?.length > 0 ? levelId : "1",
     };
+    dispatch({
+      type: "CREATE_FLASHCARD",
+      payload: body,
+    });
+    closeModel();
   };
 
+  const edit = () => {
+    const body = {
+      englishword: englishWord,
+      arabicword: arabicWord,
+      level_id: levelId,
+      id: editingFlashcard?.id,
+    };
+    dispatch({
+      type: "EDIT_FLASHCARD",
+      payload: body,
+    });
+    closeModel();
+  };
+
+  // this useEffect checks if we're on edit mode then prefills englishword arabicword and level id
+  useEffect(() => {
+    if (editingFlashcard) {
+      setEnglishWord(editingFlashcard?.englishword);
+      setArabicWord(editingFlashcard?.arabicword);
+      setLevelId(editingFlashcard?.level_id);
+    }
+  }, [editingFlashcard]);
   return (
     <div className="popup">
       <div className="popup-content">
@@ -40,8 +69,15 @@ function CreateFlashCard({closeModel}) {
           <option value="3">level 3</option>
           <option value="4">level 4</option>
         </select>
-        <button className="create">Create Flashcard</button>
-        <button className="cancel" onClick={()=>closeModel()}>Cancel</button>
+        <button
+          className="create"
+          onClick={() => (editingFlashcard ? edit() : create())}
+        >
+          Create Flashcard
+        </button>
+        <button className="cancel" onClick={() => closeModel()}>
+          Cancel
+        </button>
       </div>
     </div>
   );
