@@ -9,7 +9,6 @@ function* createFlashcard(action) {
     // passes the username and password from the payload to the server
     yield axios.post("/api/admin/create-flashcard", action.payload);
     yield put({ type: "GET_FLASHCARDS" });
-
   } catch (error) {
     console.log("Error with creating flashcard:", error);
     yield put({ type: "FLASHCARD_FAILED" });
@@ -42,6 +41,21 @@ function* editFlashcard(action) {
     yield put({ type: "FLASHCARD_FAILED" });
   }
 }
+function* flipFlashcard(action) {
+  try {
+    // clear any existing error on the flashcard page
+    yield put({ type: "EDIT_FLASHCARD_ERROR" });
+
+    // passes the username and password from the payload to the server
+    yield axios.put(
+      "/api/flashcards/flips/" + action.payload.userId,
+      action.payload
+    );
+  } catch (error) {
+    console.log("Error with creating flashcard:", error);
+    yield put({ type: "FLASHCARD_FAILED" });
+  }
+}
 function* deleteFlashcard(action) {
   try {
     // clear any existing error on the flashcard page
@@ -61,7 +75,7 @@ function* flashcardSaga() {
   yield takeLatest("GET_FLASHCARDS", fetchAllFlashcards);
   yield takeLatest("EDIT_FLASHCARD", editFlashcard);
   yield takeLatest("DELETE_FLASHCARD", deleteFlashcard);
-
+  yield takeLatest("FLIP_FLASHCARD", flipFlashcard);
 }
 
 export default flashcardSaga;
