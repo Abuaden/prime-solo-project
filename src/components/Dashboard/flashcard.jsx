@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 function FlashCard({ flashcard }) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const [showArabic, setShowArabic] = useState(true);
+  const [showArabic, setShowArabic] = useState(false);
   const flipThisCard = () => {
     const body = { flippedId: flashcard?.id, userId: user?.id };
     if (progress.includes(flashcard?.id.toString())) {

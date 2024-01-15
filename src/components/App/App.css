@@ -306,7 +306,6 @@ a:visited {
   padding-right: 50px;
   width: 100%;
   max-width: 1200px;
-
 }
 
 .popup {
@@ -473,5 +472,23 @@ height: 100%;
   align-items: center;
   justify-content: center;
   transform: rotateX(180deg);
+
 }
 
+
+.flipped-count{
+  color: white;
+  text-align: center;
+  
+}
+.current-level{
+  color: #ffc62d;
+}
+
+
+.progress{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 70vh;
+}

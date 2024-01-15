@@ -56,8 +56,6 @@ function DashboardPage() {
     dispatch({ type: "GET_FLASHCARDS" });
   }, [dispatch]);
 
- 
-
   const getLevelNameFromId = (level_id) => {
     if (level_id === "1") {
       return "Novice";
@@ -153,8 +151,8 @@ function DashboardPage() {
             <table>
               <thead>
                 <tr>
-                  <th>English Word</th>
                   <th>Arabic Word</th>
+                  <th>English Word</th>
                   <th>Level</th>
                   <th>Actions</th>
                 </tr>
