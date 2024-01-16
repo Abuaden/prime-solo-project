@@ -4,16 +4,54 @@ import CreateFlashCard from "./CreateFlashCard";
 import FlashCard from "./flashcard";
 function DashboardPage() {
   const user = useSelector((store) => store.user);
+  const levels = useSelector((store) => store.levelsReducer);
   const galleryRef = useRef(null);
   const [totalSlides, setTotalSlides] = useState(0);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
+  const progress = useSelector((store) => store.progressReducer);
+  const allFlashcards = useSelector((store) => store.flashcardReducer);
   const scrollToNext = () => {
     if (galleryRef.current) {
+      const currentFlashcard = allFlashcards[currentSlide - 1];
+      if (progress.includes(currentFlashcard.id.toString())) {
+        console.log("user has viewed this already");
+      } else {
+        console.log("user should NOT go next");
+        return;
+      }
+      console.log(currentFlashcard);
       galleryRef.current.scrollBy({
         left: galleryRef.current.clientWidth,
         behavior: "smooth",
       });
+      console.log(user?.flashcards_flipped);
+      const currentLevel = levels.filter(
+        (level) => level.level_id.toString() === user.current_level.toString()
+      );
+      console.log("Current Slide:", currentSlide);
+      console.log("Current Level:", currentLevel);
+      if (
+        currentSlide.toString() === currentLevel[0].flashcard_count?.toString()
+      ) {
+        console.log("move user to next level");
+        let nextLevelId = "";
+        if (currentLevel[0].level_id.toString() === "1") {
+          nextLevelId = 2;
+        } else if (currentLevel[0].level_id.toString() === "2") {
+          nextLevelId = 3;
+        } else if (currentLevel[0].level_id.toString() === "3") {
+          nextLevelId = 4;
+        }
+        dispatch({
+          type: "UPGRADE_USER",
+          payload: {
+            user_id: user.id,
+            level_id: nextLevelId,
+          },
+        });
+      }
+      localStorage.setItem("currentSlide", currentSlide);
     }
   };
   const dispatch = useDispatch();
@@ -29,6 +67,7 @@ function DashboardPage() {
   useEffect(() => {
     const gallery = galleryRef.current;
     if (gallery) {
+      console.log(gallery);
       setTotalSlides(gallery.children.length);
       gallery.addEventListener("scroll", handleScroll);
     }
@@ -49,13 +88,18 @@ function DashboardPage() {
     }
   };
 
-  const allFlashcards = useSelector((store) => store.flashcardReducer);
-  const progress = useSelector((store) => store.progressReducer);
-
   useEffect(() => {
     dispatch({ type: "GET_FLASHCARDS" });
-  }, [dispatch]);
+  }, []);
 
+  useEffect(() => {
+    dispatch({ type: "GET_LEVELS" });
+  }, []);
+  useEffect(() => {
+    if (user?.id) {
+      dispatch({ type: "GET_PROGRESS", payload: { id: user?.id } });
+    }
+  }, [user, currentSlide]);
   const getLevelNameFromId = (level_id) => {
     if (level_id === "1") {
       return "Novice";
@@ -69,6 +113,25 @@ function DashboardPage() {
   };
 
   const [editingFlashcard, setEditingFlashcard] = useState(null);
+
+  useEffect(() => {
+    const handleWheel = (e) => {
+      e.preventDefault();
+    };
+    const allFlashcardsElement = document.getElementById("allFlashcards");
+    if (allFlashcardsElement) {
+      allFlashcardsElement.addEventListener("wheel", handleWheel, {
+        passive: false,
+      });
+    }
+
+    return () => {
+      if (allFlashcardsElement) {
+        allFlashcardsElement.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, []);
+
   return (
     <>
       <div className="boxer">
@@ -115,6 +178,7 @@ function DashboardPage() {
                   <path d="m12 8-4 4 4 4" />
                 </svg>
                 <svg
+                  id="goNext"
                   onClick={scrollToNext}
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
