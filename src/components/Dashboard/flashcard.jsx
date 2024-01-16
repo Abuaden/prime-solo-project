@@ -19,11 +19,7 @@ function FlashCard({ flashcard }) {
   };
   const progress = useSelector((store) => store.progressReducer);
 
-  useEffect(() => {
-    if (user?.id) {
-      dispatch({ type: "GET_PROGRESS", payload: { id: user?.id } });
-    }
-  }, [user]);
+  
   return (
     <div
       onClick={() => {
