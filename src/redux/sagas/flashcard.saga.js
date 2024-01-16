@@ -31,9 +31,7 @@ function* fetchAllFlashcards() {
 function* getProgress(action) {
   try {
     // Get the flashcards:
-    const flashcardsResponse = yield axios.get(
-      "/api/flashcards/flips/" + action.payload.id
-    );
+    const flashcardsResponse = yield axios.get("/api/flashcards/flips");
     // Set the value of the flashcards reducer:
     yield put({
       type: "SET_PROGRESS",
@@ -73,6 +71,24 @@ function* flipFlashcard(action) {
     yield put({ type: "FLASHCARD_FAILED" });
   }
 }
+
+function* upgradeUser(action) {
+  try {
+    // clear any existing error on the flashcard page
+    yield put({ type: "EDIT_FLASHCARD_ERROR" });
+
+    // passes the username and password from the payload to the server
+    yield axios.put(
+      "/api/flashcards/upgrade/" + action.payload.user_id,
+      action.payload
+    );
+    console.log("card has been flipped");
+    yield put({ type: "FETCH_USER" });
+  } catch (error) {
+    console.log("Error with creating flashcard:", error);
+    yield put({ type: "FLASHCARD_FAILED" });
+  }
+}
 function* deleteFlashcard(action) {
   try {
     // clear any existing error on the flashcard page
@@ -86,6 +102,19 @@ function* deleteFlashcard(action) {
     yield put({ type: "FLASHCARD_FAILED" });
   }
 }
+function* getLevelCount() {
+  try {
+    // Get the flashcards:
+    const levelsResponse = yield axios.get("/api/flashcards/get-level-count");
+    // Set the value of the flashcards reducer:
+    yield put({
+      type: "SET_LEVELS",
+      payload: levelsResponse.data,
+    });
+  } catch (error) {
+    console.log("fetchAllFlashcards error:", error);
+  }
+}
 
 function* flashcardSaga() {
   yield takeLatest("CREATE_FLASHCARD", createFlashcard);
@@ -94,6 +123,8 @@ function* flashcardSaga() {
   yield takeLatest("DELETE_FLASHCARD", deleteFlashcard);
   yield takeLatest("FLIP_FLASHCARD", flipFlashcard);
   yield takeLatest("GET_PROGRESS", getProgress);
+  yield takeLatest("GET_LEVELS", getLevelCount);
+  yield takeLatest("UPGRADE_USER", upgradeUser);
 }
 
 export default flashcardSaga;
