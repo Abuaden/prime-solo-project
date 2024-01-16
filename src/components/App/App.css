@@ -492,3 +492,8 @@ height: 100%;
   flex-direction: column;
   height: 70vh;
 }
+
+.quiz{
+  color: white;
+  text-align: center;
+}
